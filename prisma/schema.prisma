@@ -1,0 +1,132 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Article {
+  id          String   @id @default(cuid())
+  title       String   @unique
+  description String?
+  body        String?
+  published   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  author      User?    @relation(fields: [authorId], references: [id])
+  authorId    String
+}
+
+model User {
+  id        String    @id @default(cuid()) @map("user_id")
+  name      String?
+  email     String    @unique
+  password  String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  articles  Article[]
+  Session   Session[]
+  Account   Account[]
+}
+
+model Session {
+  id            String   @id @default(cuid())
+  session_token String   @unique
+  user          User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String   @map("user_id")
+  expires       DateTime
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId            String  @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String?  
+  access_token      String? 
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? 
+  session_state     String? 
+
+  @@unique([provider, providerAccountId])
+  @@map("account")
+}
+
+model testProject {
+  id                Int  @id @default(autoincrement())
+  NUMMER Int?
+  JAHR Int?
+  VERTRAGNR Int?
+  KLIENT String?  @db.VarChar(500)
+  KURZEL String?  @db.VarChar(500)
+  PRODUKTION String?  @db.VarChar(500)
+  SENDER String?  @db.VarChar(500)
+  ADATUM String?  @db.VarChar(500)
+  VDATUM String?  @db.VarChar(500)
+  A1 String?  @db.VarChar(500)
+  TA1 String?  @db.VarChar(500)
+  A2 String?  @db.VarChar(500)
+  TA2 String?  @db.VarChar(500)
+  A3 String?  @db.VarChar(500)
+  TA3 String?  @db.VarChar(500)
+  A4 String?  @db.VarChar(500)
+  TA4 String?  @db.VarChar(500)
+  TITEL String?  @db.VarChar(500)
+  REGIE String?  @db.VarChar(500)
+  ROLLE String?  @db.VarChar(500)
+  PARTNER String?  @db.VarChar(500)
+  XY String?  @db.VarChar(500)
+  TAGE String?  @db.VarChar(500)
+  PBDATUM String?  @db.VarChar(500)
+  PDATUM String?  @db.VarChar(500)
+  TERMINE String?  @db.VarChar(500)
+  ODATUM String?  @db.VarChar(500)
+  ZEITRAUM String?  @db.VarChar(500)
+  VERMERK String?  @db.VarChar(500)
+  PROVISION Float?
+  PROV2 String?  @db.VarChar(500)
+  NOTIZ String?  @db.VarChar(2000)
+}
+
+
+
+model testAddress {
+  ID                String  @id @default(cuid())
+  SUCH String?  @db.VarChar(500)
+  A1 String?  @db.VarChar(500)
+  A2 String?  @db.VarChar(500)
+  A3 String?  @db.VarChar(500)
+  STRASSE String?  @db.VarChar(500)
+  LAND String?  @db.VarChar(500)
+  PLZ String?  @db.VarChar(500)
+  ORT String?  @db.VarChar(500)
+  TELEFON1 String?  @db.VarChar(500)
+  TELEFON2 String?  @db.VarChar(500)
+  TELE_ZENT Int?
+  FUNKTELE String?  @db.VarChar(500)
+  PRIVATTEL String?  @db.VarChar(500)
+  TELEFAX1 String?  @db.VarChar(500)
+  TELEFAX2 String?  @db.VarChar(500)
+  FUNKTION String?  @db.VarChar(500)
+  TITEL String?  @db.VarChar(500)
+  VORNAME String?  @db.VarChar(500)
+  NACHNAME String?  @db.VarChar(500)
+  FIRMA String?  @db.VarChar(500)
+  POSITION String?  @db.VarChar(500)
+  ANSPRECH String?  @db.VarChar(500)
+  ANREDE String?  @db.VarChar(500)
+  ZUSATZ String?  @db.VarChar(500)
+  NOTIZEN String?  @db.VarChar(500)
+  AENDERUNGS String? @db.VarChar(500)
+  KATALOGVER Int?
+  EMAIL String?  @db.VarChar(500)
+}
